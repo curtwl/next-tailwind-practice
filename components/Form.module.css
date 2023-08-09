@@ -1,0 +1,51 @@
+.formContainer {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+margin-top: 1em;
+}
+
+.form {
+    font-size: 1.3rem;
+    margin: 1em 2em;
+    display: grid;
+  }
+  
+  .form > p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: gray;
+    
+  }
+  
+  .postTitle {
+    
+  }
+  .postTitle, .postBody, .submitBtn {
+    margin-top: 1em;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: solid lightgray;
+    border-radius: 5px;
+  }
+  
+  .postBody {
+    padding: 15px;
+  }
+  
+  .submitBtn {
+    min-width: 80px;
+    width: auto;
+    padding: 0.7em;
+    background-color: rgb(0, 123, 255);
+    color: whitesmoke;
+    font-size: 1rem;
+    border: none;
+  }
+  
+  .submitBtn {
+    margin-bottom: 3em;
+  }

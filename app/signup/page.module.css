@@ -1,0 +1,36 @@
+/* .signupformcontainer {
+  font-size: 1.3rem;
+  margin: 2.5em auto;
+  display: grid;
+  background-color: white;
+border-radius: 8px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+padding: 20px;
+width: 70%;
+  } */
+  
+  .signupform {
+    display: grid;
+  }
+  
+  .signupform > p {
+  margin-bottom: 2em;
+  }
+  
+  .submitbtn {
+    min-width: 80px;
+    width: auto;
+    padding: 0.7em;
+    background-color: rgb(0, 123, 255);
+    color: whitesmoke;
+    font-size: 1rem;
+    border: black;
+  }
+
+  #username {
+    margin-bottom: 0.5em;
+  }
+  
+  #password {
+    margin-bottom: 1em;
+  }

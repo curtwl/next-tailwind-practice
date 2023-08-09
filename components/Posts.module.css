@@ -1,0 +1,80 @@
+.postsContainer {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+    grid-template-rows: auto;
+    position: relative;
+  }
+  
+  .postsContainerElement {
+    display: flex;
+    flex-direction: column;
+    border: solid lightgray;
+    border-radius: 4px;
+    width: auto;
+    height: auto;
+    min-height: 300px;
+    max-height: 300px;
+    overflow: hidden;
+    position: relative;
+    background-color: white;
+  }
+  
+  .title {
+    top: 0;
+    background-color: rgb(250, 246, 246);
+    padding: 0.5em;
+    border-bottom: solid lightgray;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  
+  .content {
+    overflow: auto;
+    max-height: 60%;
+    padding: 0.75em;
+    font-size: 1rem;
+    line-height: 1.6;
+    
+  }
+  
+  
+  .editDelete {
+    display: none;
+  }
+  
+  .postsContainerElement:hover .editDelete {
+    display: flex;
+    align-items: center;
+    background-color: rgb(250, 246, 246);
+    padding: 2px;
+    border-top: solid lightgray;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .editDelete .edit {
+    order: 1;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0px;
+    color: blue;
+    margin-left: 3%;
+    font-size: 1rem;
+  }
+  
+  .editDelete .delete {
+    order: 2;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0px;
+    margin-left: 40%;
+    color: red;
+    font-size: 1rem;
+  }
