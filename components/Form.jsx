@@ -1,8 +1,9 @@
 "use client"
 import styles from './Form.module.css'
-// import entriesService from '../services/entriesService'
+//import handler from '../app/api/entries.route.js'
 import { useState, useContext } from 'react'
 //import { EditModalContext, NotificationContext } from "./ContextProvider"
+import axios from 'axios'
 
 const Form = ({journalEntries, setJournalEntries}) => {
   const [postTitle, setPostTitle] = useState('')
@@ -18,7 +19,17 @@ const Form = ({journalEntries, setJournalEntries}) => {
       content: postBody
     }
 
-    setJournalEntries(journalEntries.concat(newEntry))
+    try {
+        const response = await axios.post('/api/entries', newEntry)
+        setJournalEntries([...journalEntries, response.data])
+        setPostTitle('')
+        setPostBody('')
+      } catch (error) {
+        console.error(error)
+        // Handle error if needed
+      }
+    
+    //setJournalEntries(journalEntries.concat(newEntry))
     // try {
     //   const res = await entriesService.createEntry(newEntry)
     //   setJournalEntries(journalEntries.concat(res))

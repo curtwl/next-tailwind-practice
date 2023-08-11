@@ -2,41 +2,44 @@
 import React from "react"
 import styles from './page.module.css'
 import { useState, useContext } from 'react'
+import axios from 'axios'
 
 
 export default function Login() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
-
-
     const loginUser = async (event) => {
-        event.preventDefault()
-        const userObject = {
-          username: username,
-          password: password,
+      event.preventDefault()
+      const userObject = {
+        username: username,
+        password: password,
+      }
+    
+      try {
+        const response = await axios.post('/api/login', userObject)
+    
+        if (response.status !== 200) {
+          throw new Error('Username or password incorrect')
         }
     
-        // try {
-        //     const user = await loginService.login(userObject)
-        //     if (!user)
-        //       throw new Error('Username or password incorrect')
-        //     entriesService.setToken(user.accessToken)
-        //     loginService.setToken(user.accessToken)
-        //     showSuccess('Logged in successfully!')
-        //     loginContext.setLoggedInUser( {username: user.username, id: user.id} )
-        //     navigate('/')
-        //   } catch (error) {
-        //     showError('Username or password incorrect')
-        //     console.error(error)
-        //   }
-        //   setTimeout(() => clearNotification(), 3000)
+        const user = response.data
+        // entriesService.setToken(user.accessToken)
+        // loginService.setToken(user.accessToken)
+        // showSuccess('Logged in successfully!')
+        //loginContext.setLoggedInUser( {username: user.username, id: user.id} )
+        //navigate('/')
+      } catch (error) {
+        // showError('Username or password incorrect')
+        console.error(error)
+      }
+      // setTimeout(() => clearNotification(), 3000)
     }
 
     return (
         <div className="text-xl my-10 mx-auto grid gap-4 bg-white rounded-lg shadow-md p-5 w-3/4 min-h-3/4">
           <form className={styles.signupForm} onSubmit={loginUser}>
-            <p><strong>Login</strong> to create journals!</p>
+            <p className="text-xl my-12"><strong className="text-2xl">Login</strong> to create journals!</p>
             <label htmlFor="username">Username:</label>
             <input id="username" spellCheck="false" autoCapitalize="none" autoComplete="off"
                    type="text" value={username} onChange={({ target }) => 

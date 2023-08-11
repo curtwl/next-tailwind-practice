@@ -18,18 +18,15 @@
 
 body {
 box-sizing: border-box;
+color: darkblue;
 }
 
-.header-container {
-  width: 100%;
-  height: 100%;
-}
-.header-container, .header-login {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-left: 0;
-  /* background-color: rgb(252, 252, 249); */
+
+.header-login {
+
+
+
+  background-color: rgb(252, 252, 249);
   
 }
 
@@ -45,14 +42,9 @@ box-sizing: border-box;
   align-items: start;
 }
 
-.header-title {
-  margin: 0;
-  margin-top:1.2em;
-}
-
 .header-link {
   text-decoration: none;
-  color: black;
+  color: blue;
   font-size: 2.5rem;
 }
 
@@ -96,11 +88,11 @@ a:link {
     margin: 8;
   }
 
-  .header-container, .header-main , .header-login {
+  /* .header-container, .header-main , .header-login {
     display: flex;
     flex-direction: row;
     align-items: center;
-  }
+  } */
   
   .header-main > h1 {
     margin: 1em 1em;
@@ -119,7 +111,6 @@ a:link {
 
   .header-link {
     text-decoration: none;
-    color: black;
     font-size: 2.5rem;
   }
 
@@ -145,7 +136,7 @@ a:link {
   }
 
   .header-login > a {
-    margin-left: 22px;
+    margin-left: 26px;
     text-decoration: none;
     font-size: 1.8rem;
   }

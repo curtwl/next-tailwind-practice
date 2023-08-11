@@ -1,9 +1,10 @@
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import Link from 'next/link'
 import React from "react"
+import dbConnect from './utils/dbConnect'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Roboto({ weight: '700', subsets: ['latin'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -11,19 +12,21 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+  dbConnect()
+
   return (
     <html lang="en">
       <body className={`${inter.className} bg-blue-300`}>      
-        <nav className="flex flex-row w-full h-full items-start justify-between bg-blue-200" >
+        <nav className="flex flex-row w-full h-full items-start md:items-center justify-between bg-blue-200" >
           <div className="m-4 flex items-center">
-            <h1 className="header-title">
+            <h1 className="">
               <Link href="." className="header-link">Digital Journal&nbsp;</Link>
             </h1>
             <h2>| Create a Note</h2>
           </div>
-          <div className='header-login'>
-            <Link href="login">Login</Link>
-            <Link href="signup" className="header-signup">
+          <div className='flex flex-row md:text-2xl'>
+            <Link href="login" className="mr-6">Login</Link>
+            <Link href="signup" className="mr-3">
               Sign Up
             </Link>
           </div>
