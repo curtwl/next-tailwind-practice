@@ -33,7 +33,7 @@ async function loginWithPassword(body) {
       id: user._id,
     }, 
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '20m' }
+    { expiresIn: '6s' }
   )
 
   const refreshToken = jwt.sign(

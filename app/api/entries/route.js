@@ -36,12 +36,13 @@ const decodedToken = await verifyToken(req)
 }
 
 export async function POST(req) {
+  await dbConnect()
   const body = await req.json()
   const cookieStore = cookies()
   const cookieToDecode = cookieStore.get('userCookie')
 
-  const decodedToken = await verifyToken(cookieToDecode.value)
-  console.log(decodedToken)
+  const decodedToken = await verifyToken(cookieToDecode?.value)
+  //console.log(decodedToken)
   
   if (decodedToken?.id) {
     try {
