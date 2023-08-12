@@ -2,24 +2,17 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoggedInUser } from '../app/slices/loginSlice'
-<<<<<<< HEAD
-
-=======
 import dbConnect from '../app/utils/dbConnect'
->>>>>>> detached-branch
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
 const Header = () => {
-<<<<<<< HEAD
-=======
-  useEffect(() => {
-    const test = async () => await dbConnect()
-    test()
-  }, [])
+  // useEffect(() => {
+  //   const test = async () => await dbConnect()
+  //   test()
+  // }, [])
   
   //dbConnect()
->>>>>>> detached-branch
   const pathsForJSX = {
     '/': 'Create A Note',
     '/login': 'Login',
@@ -32,21 +25,11 @@ const Header = () => {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.login.loggedInUser)
 
-<<<<<<< HEAD
-  // Here, you can use the setLoggedInUser action to update the store state.
-=======
->>>>>>> detached-branch
   useEffect(() => {
     dispatch(setLoggedInUser('John Doe'))
   }, [dispatch])
 
-<<<<<<< HEAD
-  // You can access the loggedInUser here.
   console.log(loggedInUser)
-
-=======
-  console.log(loggedInUser)
->>>>>>> detached-branch
   return (
     <nav className="flex flex-row w-full h-full items-start md:items-center justify-between bg-blue-200" >
       <div className="m-4 flex items-center">
