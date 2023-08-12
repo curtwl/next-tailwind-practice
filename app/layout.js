@@ -1,8 +1,11 @@
+"use client"
 import './globals.css'
 import { Roboto } from 'next/font/google'
 import Link from 'next/link'
 import React from "react"
-import dbConnect from './utils/dbConnect'
+import { Provider } from 'react-redux'
+import store from './store'
+import Header from '../components/Header'
 
 const inter = Roboto({ weight: '700', subsets: ['latin'] })
 
@@ -12,59 +15,14 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
-  dbConnect()
-
   return (
     <html lang="en">
       <body className={`${inter.className} bg-blue-300`}>      
-        <nav className="flex flex-row w-full h-full items-start md:items-center justify-between bg-blue-200" >
-          <div className="m-4 flex items-center">
-            <h1 className="">
-              <Link href="." className="header-link">Digital Journal&nbsp;</Link>
-            </h1>
-            <h2>| Create a Note</h2>
-          </div>
-          <div className='flex flex-row md:text-2xl'>
-            <Link href="login" className="mr-6">Login</Link>
-            <Link href="signup" className="mr-3">
-              Sign Up
-            </Link>
-          </div>
-              {/* <button id="logout-btn" >Logout</button> */}
-        </nav>
+      <Provider store={store}>
+        <Header />
         {children}
+      </Provider>
       </body>
     </html>
   )
 }
-
-
-
-// const Header = ({  }) => {
-
-//   const pathsForJSX = {
-//     '/': 'Create A Note',
-//     '/login': 'Login',
-//     '/signup': 'Signup',
-//     '/account': 'Account'
-//   }
-
-//   const logoutUser = () => {
-
-//   }
-
-//   return (
-//     <header onClick={logoutUser}>
-//       <nav className="header-container" >
-//         <div className='header-main'>
-//           <h1 className="header-title"><Link to="/" className="header-link">Digital Journal&nbsp;</Link></h1>
-//           <h2>| t</h2>
-//         </div>
-//         <div className='header-login'>
-          
-//             <button id="logout-btn" onClick={logoutUser}>Logout</button>
-          
-//         </div>
-//       </nav>
-//     </header>
-// )}

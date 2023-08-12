@@ -2,6 +2,7 @@
 import styles from './page.module.css'
 import React from "react"
 import { useState, useContext } from 'react'
+import axios from 'axios'
 // import { LoginContext, NotificationContext } from "../components/ContextProvider"
 // import Notification from "../components/Notification"
 // import signupService from '../services/signupService'
@@ -21,7 +22,20 @@ export default function Signup() {
           username: username,
           password: password,
         }
+        console.log(userObject)
+        try {
+          const response = await axios.post('/api/signup', userObject)
+      
+          if (response.status !== 200) {
+            throw new Error('error')
+          }
+      
+          const user = response.data
+          console.log(user)
 
+        } catch (error) {
+          console.error(error)
+        }
         // let user = null
         // try {
         //     user = await signupService.signup(userObject)
