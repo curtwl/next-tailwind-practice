@@ -5,14 +5,10 @@ import { setLoggedInUser } from '../app/slices/loginSlice'
 import dbConnect from '../app/utils/dbConnect'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import axios from 'axios'
 
 const Header = () => {
-  // useEffect(() => {
-  //   const test = async () => await dbConnect()
-  //   test()
-  // }, [])
-  
-  //dbConnect()
   const pathsForJSX = {
     '/': 'Create A Note',
     '/login': 'Login',
@@ -21,13 +17,15 @@ const Header = () => {
   }
 
   const pathname = usePathname()
-
+  const router = useRouter()
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.login.loggedInUser)
 
-  // useEffect(() => {
-  //   dispatch(setLoggedInUser(loggedInUser))
-  // }, [loggedInUser])
+  const logoutUser = async () => {
+    const response = await axios.post('/api/logout')
+    dispatch(setLoggedInUser(null))
+    router.push('/')
+  }
 
   console.log(loggedInUser)
   return (
@@ -39,7 +37,11 @@ const Header = () => {
         <h2>| {pathsForJSX[pathname]}</h2>
       </div>
       <div className='flex flex-row md:text-2xl'>
-        <Link href="login" className="mr-6">{ loggedInUser ? 'Logout' : 'Log In' } </Link>
+      {loggedInUser ? 
+          <button id="logout-btn" onClick={logoutUser}>Logout</button>
+          :  
+        <Link href="login" className="mr-6">{ 'Log In' } </Link>
+      }
         <Link href="signup" className="mr-3">
         { loggedInUser ? loggedInUser : 'Sign Up' }
         </Link>

@@ -12,7 +12,7 @@ async function verifyToken(token) {
     let decodedToken = null
     try {
       decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
-      return decodedToken;
+      return decodedToken
     } catch (error) {
       return null
     }
