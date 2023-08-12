@@ -25,9 +25,9 @@ const Header = () => {
   const dispatch = useDispatch()
   const loggedInUser = useSelector(state => state.login.loggedInUser)
 
-  useEffect(() => {
-    dispatch(setLoggedInUser('John Doe'))
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(setLoggedInUser(loggedInUser))
+  // }, [loggedInUser])
 
   console.log(loggedInUser)
   return (
@@ -39,9 +39,9 @@ const Header = () => {
         <h2>| {pathsForJSX[pathname]}</h2>
       </div>
       <div className='flex flex-row md:text-2xl'>
-        <Link href="login" className="mr-6">Login</Link>
+        <Link href="login" className="mr-6">{ loggedInUser ? 'Logout' : 'Log In' } </Link>
         <Link href="signup" className="mr-3">
-          Sign Up
+        { loggedInUser ? loggedInUser : 'Sign Up' }
         </Link>
       </div>
         {/* <button id="logout-btn" >Logout</button> */}

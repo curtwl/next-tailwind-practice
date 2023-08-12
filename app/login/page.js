@@ -3,13 +3,16 @@ import React from "react"
 import styles from './page.module.css'
 import { useState, useContext } from 'react'
 import axios from 'axios'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoggedInUser } from '../slices/loginSlice'
 
 export default function Login() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+  const loggedInUser = useSelector((state) => state.login.loggedInUser)
 
-    const loginUser = async (event) => {
+  const loginUser = async (event) => {
       event.preventDefault()
       const userObject = {
         username: username,
@@ -25,6 +28,8 @@ export default function Login() {
     
         const user = response.data
         console.log(user)
+        dispatch(setLoggedInUser(user.username))
+        console.log(loggedInUser)
         // entriesService.setToken(user.accessToken)
         // loginService.setToken(user.accessToken)
         // showSuccess('Logged in successfully!')
@@ -35,7 +40,7 @@ export default function Login() {
         console.error(error)
       }
       // setTimeout(() => clearNotification(), 3000)
-    }
+  }
 
     return (
         <div className="text-xl my-10 mx-auto grid gap-4 bg-white rounded-lg shadow-md p-5 w-3/4 min-h-3/4">

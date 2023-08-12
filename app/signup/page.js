@@ -1,19 +1,19 @@
 "use client"
 import styles from './page.module.css'
 import React from "react"
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoggedInUser } from '../slices/loginSlice'
 // import { LoginContext, NotificationContext } from "../components/ContextProvider"
 // import Notification from "../components/Notification"
-// import signupService from '../services/signupService'
-// import loginService from '../services/loginService'
-// import entriesService from '../services/entriesService'
 
 export default function Signup() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const dispatch = useDispatch()
+    const loggedInUser = useSelector((state) => state.login.loggedInUser)
     // const navigate = useNavigate()
-    // const loginContext = useContext(LoginContext)
     // const { showSuccess, showError, clearNotification, notificationMessage } = useContext(NotificationContext)
 
     const addUser = async (event) => {
@@ -23,19 +23,29 @@ export default function Signup() {
           password: password,
         }
         console.log(userObject)
-        try {
-          const response = await axios.post('/api/signup', userObject)
-      
-          if (response.status !== 200) {
-            throw new Error('error')
-          }
-      
-          const user = response.data
-          console.log(user)
 
+        try {
+          const signupResponse = await axios.post('/api/signup', userObject)
+          if (signupResponse.status !== 201) {
+            throw new Error('Unable to sign up')
+          }
+          const loginResponse = await axios.post('/api/login', userObject)
+          console.log(loginResponse.data.accessToken)
+      
+          const user = signupResponse.data
+          console.log(user)
+          dispatch(setLoggedInUser(user.username))
+          console.log(loggedInUser)
         } catch (error) {
           console.error(error)
         }
+
+        // try {
+        //   const token = await axios.post('/api/login', userObject)
+        //   console.log(token.data.accessToken)
+        // } catch (error) {
+        //   console.error(error)
+        // }
         // let user = null
         // try {
         //     user = await signupService.signup(userObject)

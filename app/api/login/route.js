@@ -5,15 +5,14 @@ import bcrypt from 'bcrypt'
 import User from '../../models/user'
 import { cookies } from 'next/headers'
 
-export const config = {
-  runtime: 'server',
-}
+export const runtime = 'nodejs'
 
 async function loginWithPassword(body) {
   const { username, password } = body
-  console.log(username, 'loginWithPassword')
+  console.log(body, 'loginWithPassword')
 
   const user = await User.findOne({ username })
+  
   const passwordIsCorrect = user === null
     ? false
     : await bcrypt.compare(password, user.passwordHash)
@@ -21,12 +20,11 @@ async function loginWithPassword(body) {
   if (!(user && passwordIsCorrect)) {
     return NextResponse.json({ error: 'invalid username or password' }, { status: 401 })
   }
-
   const userForToken = {
     username: user.username,
     id: user._id,
   }
-
+  
   const accessToken = jwt.sign(
     {
       username: user.username,
@@ -34,17 +32,18 @@ async function loginWithPassword(body) {
     }, 
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: '6s' }
-  )
-
-  const refreshToken = jwt.sign(
-    userForToken,
-    process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" }
-  )
-
-  const cookieStore = cookies()
-  cookieStore.set('userCookie', refreshToken, { httpOnly: true })
-
+    )
+    
+    const refreshToken = jwt.sign(
+      userForToken,
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "7d" }
+      )
+      
+      const cookieStore = cookies()
+      cookieStore.set('userCookie', refreshToken, { httpOnly: true })
+      const tokenFromCookiet = cookieStore.get('userCookie')
+      console.log(tokenFromCookiet, 'cookieStore')
   return NextResponse.json({ accessToken, username: user.username, id: user.id }, { status: 200 })
 }
 
@@ -56,7 +55,7 @@ export async function POST(req) {
   console.log(tokenFromCookie,'tokenFromCookie')
 
   if (body.password) {
-    return await loginWithPassword(body)
+    return loginWithPassword(body)
   } else if (tokenFromCookie) {
     const decodedToken = jwt.verify(tokenFromCookie, process.env.ACCESS_TOKEN_SECRET)
     const user = await User.findById(decodedToken.id)

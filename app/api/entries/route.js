@@ -5,9 +5,7 @@ import User from '../../models/user'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 
-export const config = {
-  runtime: 'server',
-}
+export const runtime = 'nodejs'
 
 async function verifyToken(token) {
   if (token) {

@@ -2,9 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 const jwt = require('jsonwebtoken')
 
-export const config = {
-    runtime: 'server',
-  }
+export const runtime = 'nodejs'
 
 export async function GET(req) {
     const body = await req.json()

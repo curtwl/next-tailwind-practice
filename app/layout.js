@@ -1,8 +1,11 @@
+"use client"
 import './globals.css'
 import { Roboto } from 'next/font/google'
 import Link from 'next/link'
 import React from "react"
-
+import { Provider } from 'react-redux'
+import store from './store'
+import Header from '@/components/Header'
 
 const inter = Roboto({ weight: '700', subsets: ['latin'] })
 

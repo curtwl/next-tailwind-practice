@@ -4,6 +4,7 @@ import dbConnect from '../../utils/dbConnect'
 const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 
+export const runtime = 'nodejs'
 
 export async function GET(req) {
   const users = await User.find({})
@@ -24,6 +25,7 @@ export async function POST(req) {
   })
 
   const savedUser = await user.save()
+  
   return NextResponse.json(savedUser, { status: 201 })
 }
 
