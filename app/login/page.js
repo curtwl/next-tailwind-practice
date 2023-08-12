@@ -3,6 +3,7 @@ import React from "react"
 import styles from './page.module.css'
 import { useState, useContext } from 'react'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoggedInUser } from '../slices/loginSlice'
 
@@ -11,6 +12,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
   const loggedInUser = useSelector((state) => state.login.loggedInUser)
+  const router = useRouter()
 
   const loginUser = async (event) => {
       event.preventDefault()
@@ -30,6 +32,7 @@ export default function Login() {
         console.log(user)
         dispatch(setLoggedInUser(user.username))
         console.log(loggedInUser)
+        router.push('/')
         // entriesService.setToken(user.accessToken)
         // loginService.setToken(user.accessToken)
         // showSuccess('Logged in successfully!')

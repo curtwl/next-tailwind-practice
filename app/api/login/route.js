@@ -42,8 +42,6 @@ async function loginWithPassword(body) {
       
       const cookieStore = cookies()
       cookieStore.set('userCookie', refreshToken, { httpOnly: true })
-      const tokenFromCookiet = cookieStore.get('userCookie')
-      console.log(tokenFromCookiet, 'cookieStore')
   return NextResponse.json({ accessToken, username: user.username, id: user.id }, { status: 200 })
 }
 

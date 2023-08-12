@@ -5,6 +5,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoggedInUser } from '../slices/loginSlice'
+import { useRouter } from 'next/navigation'
 // import { LoginContext, NotificationContext } from "../components/ContextProvider"
 // import Notification from "../components/Notification"
 
@@ -13,6 +14,7 @@ export default function Signup() {
     const [password, setPassword] = useState('')
     const dispatch = useDispatch()
     const loggedInUser = useSelector((state) => state.login.loggedInUser)
+    const router = useRouter()
     // const navigate = useNavigate()
     // const { showSuccess, showError, clearNotification, notificationMessage } = useContext(NotificationContext)
 
@@ -36,6 +38,7 @@ export default function Signup() {
           console.log(user)
           dispatch(setLoggedInUser(user.username))
           console.log(loggedInUser)
+          router.push('/')
         } catch (error) {
           console.error(error)
         }
