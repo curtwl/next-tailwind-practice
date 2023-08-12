@@ -23,7 +23,8 @@ async function verifyToken(token) {
 }
 
 export async function GET(req) {
-const decodedToken = await verifyToken(req)
+  await dbConnect()
+  const decodedToken = await verifyToken(req)
   if (decodedToken?.id) {
     try {
       const entries = await Entry.find({ author: decodedToken.id })

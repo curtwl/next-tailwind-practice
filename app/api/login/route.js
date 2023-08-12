@@ -49,6 +49,7 @@ async function loginWithPassword(body) {
 }
 
 export async function POST(req) {
+  await dbConnect()
   const body = await req.json()
   const cookieStore = cookies()
   const tokenFromCookie = cookieStore.get('userCookie')

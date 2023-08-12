@@ -24,6 +24,7 @@ export default function Login() {
         }
     
         const user = response.data
+        console.log(user)
         // entriesService.setToken(user.accessToken)
         // loginService.setToken(user.accessToken)
         // showSuccess('Logged in successfully!')
