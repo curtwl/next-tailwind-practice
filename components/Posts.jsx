@@ -19,7 +19,7 @@ const Posts = ({journalEntries, setJournalEntries}) => {
     setEditedPostBody(entry.content)
     // editModalContext.setEditModal(true)
   }
-
+console.log(journalEntries)
 //   const deleteEntryHandler = async (entry) => {
 //     try {
 //       if (window.confirm("Are you sure you want to delete this entry?")) {
@@ -39,7 +39,7 @@ const Posts = ({journalEntries, setJournalEntries}) => {
 //       }
 //     }
 
-  const reversedEntries = [...journalEntries].reverse()
+  const reversedEntries = journalEntries ? [...journalEntries].reverse() : null
   const postsHTML = reversedEntries.map((entry) => (
     <article className={styles.postsContainerElement} key={entry.id} >
       <div className={styles.title}>{entry.title}</div>

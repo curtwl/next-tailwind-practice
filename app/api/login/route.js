@@ -55,13 +55,14 @@ export async function POST(req) {
   if (body.password) {
     return loginWithPassword(body)
   } else if (tokenFromCookie) {
-    const decodedToken = jwt.verify(tokenFromCookie, process.env.ACCESS_TOKEN_SECRET)
+    console.log('got here')
+    const decodedToken = jwt.verify(tokenFromCookie.value, process.env.REFRESH_TOKEN_SECRET)
     const user = await User.findById(decodedToken.id)
     if (user) {
       return NextResponse.json({ tokenFromCookie, username: decodedToken.username, id: decodedToken.id }, { status: 200 })
     } else {
       return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
-        .clearCookie("token")
+        //.clearCookie("token")
     }
   } else {
     //console.log(req,'no password or cookie')

@@ -22,7 +22,10 @@ async function verifyToken(token) {
 
 export async function GET(req) {
   await dbConnect()
-  const decodedToken = await verifyToken(req)
+  const cookieStore = cookies()
+  const cookieToDecode = cookieStore.get('userCookie')
+
+  const decodedToken = await verifyToken(cookieToDecode?.value)
   if (decodedToken?.id) {
     try {
       const entries = await Entry.find({ author: decodedToken.id })
