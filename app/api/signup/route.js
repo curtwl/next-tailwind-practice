@@ -1,43 +1,61 @@
 const bcrypt = require('bcrypt')
 import { NextResponse } from 'next/server'
-import dbConnect from '../../utils/dbConnect'
+import prisma from '../../../lib/prisma'
 const jwt = require('jsonwebtoken')
-const User = require('../../models/user')
+import { cookies } from 'next/headers'
 
 export const runtime = 'nodejs'
 
-export async function GET(req) {
-  const users = await User.find({})
-  response.json(users)
-}
+async function verifyToken(token) {
+    if (token) {
+      let decodedToken = null
+      try {
+        decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
+        return decodedToken
+      } catch (error) {
+        return null
+      }
+    }
+    return null
+  }
 
 export async function POST(req) {
-  await dbConnect()
   const body = await req.json()
   const { username, password } = body
 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  const user = new User({
-    username,
-    passwordHash,
+  const user = await prisma.user.create({
+    data: {
+        username,
+        passwordHash
+    }
   })
-
-  const savedUser = await user.save()
   
-  return NextResponse.json(savedUser, { status: 201 })
+  return NextResponse.json(user, { status: 201 })
 }
 
-// export async function DELETE(req) {
-//   await dbConnect()
-//   const decodedToken = helper.requireToken(request, response)
+export async function DELETE(req) {
+  const cookieStore = cookies()
+  const cookieToDecode = cookieStore.get('userCookie')
   
-//     if (!decodedToken.id) {
-//       return response.status(401).json({ error: 'Invalid token' })
-//     }
-//     const deletedUser = await User.findByIdAndRemove(request.params.id)
+  const decodedToken = await verifyToken(cookieToDecode?.value)
+  console.log(decodedToken)
+  
+    if (!decodedToken.id) {
+      return NextResponse.json({ error: 'Invalid token' })
+    }
+    
+    try {
+        await prisma.user.delete({
+          where: {
+            id: decodedToken.id,
+          },
+        })
+      } catch (error) {
+        return NextResponse.json({ message: 'error' })
+      }
 
-//     response.status(204).end()
-//     return { success: true, message: 'Your account has been successfully deleted' }
-// }
+      return NextResponse.json({ message: 'Your account has been successfully deleted', status: 204 })
+}

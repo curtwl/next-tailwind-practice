@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
-import dbConnect from '../../utils/dbConnect'
+import prisma from '../../../lib/prisma'
 import bcrypt from 'bcrypt'
-import User from '../../models/user'
 import { cookies } from 'next/headers'
 
 export const runtime = 'nodejs'
@@ -11,7 +10,11 @@ async function loginWithPassword(body) {
   const { username, password } = body
   console.log(body, 'loginWithPassword')
 
-  const user = await User.findOne({ username })
+  const user = await prisma.user.findUnique({
+    where: {
+      username: username,
+    },
+  })
   
   const passwordIsCorrect = user === null
     ? false
@@ -22,13 +25,13 @@ async function loginWithPassword(body) {
   }
   const userForToken = {
     username: user.username,
-    id: user._id,
+    id: user.id,
   }
   
   const accessToken = jwt.sign(
     {
       username: user.username,
-      id: user._id,
+      id: user.id,
     }, 
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: '6s' }
@@ -46,7 +49,6 @@ async function loginWithPassword(body) {
 }
 
 export async function POST(req) {
-  await dbConnect()
   const body = await req.json()
   const cookieStore = cookies()
   const tokenFromCookie = cookieStore.get('userCookie')
@@ -57,7 +59,13 @@ export async function POST(req) {
   } else if (tokenFromCookie) {
     console.log('got here')
     const decodedToken = jwt.verify(tokenFromCookie.value, process.env.REFRESH_TOKEN_SECRET)
-    const user = await User.findById(decodedToken.id)
+    
+    const user = await prisma.user.findUnique({
+      where: {
+        id: decodedToken.id,
+      },
+    })
+
     if (user) {
       return NextResponse.json({ tokenFromCookie, username: decodedToken.username, id: decodedToken.id }, { status: 200 })
     } else {
