@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoggedInUser } from '../app/slices/loginSlice'
-import dbConnect from '../app/utils/dbConnect'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -46,7 +45,6 @@ const Header = () => {
         { loggedInUser ? loggedInUser : 'Sign Up' }
         </Link>
       </div>
-        {/* <button id="logout-btn" >Logout</button> */}
   </nav>
   )
 }

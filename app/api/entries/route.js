@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
-import dbConnect from '../../utils/dbConnect'
-import Entry from '../../models/entry'
-import User from '../../models/user'
+import prisma from '../../../lib/prisma'
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 
@@ -21,15 +19,22 @@ async function verifyToken(token) {
 }
 
 export async function GET(req) {
-  await dbConnect()
   const cookieStore = cookies()
   const cookieToDecode = cookieStore.get('userCookie')
-
   const decodedToken = await verifyToken(cookieToDecode?.value)
+  
   if (decodedToken?.id) {
     try {
-      const entries = await Entry.find({ author: decodedToken.id })
+      const entries = await prisma.entry.findMany({
+        where: {
+          author: {
+            id: decodedToken.id
+          }
+        }
+      })
+
       return NextResponse.json(entries)
+
     } catch (error) {
       return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
@@ -38,25 +43,33 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
-  await dbConnect()
   const body = await req.json()
   const cookieStore = cookies()
   const cookieToDecode = cookieStore.get('userCookie')
 
   const decodedToken = await verifyToken(cookieToDecode?.value)
-  //console.log(decodedToken)
+  console.log(decodedToken)
   
   if (decodedToken?.id) {
     try {
-      const user = await User.findById(decodedToken.id)
-      const entry = new Entry({
-        title: body.title,
-        content: body.content,
-        author: user._id,
+      const user = await prisma.user.findUnique({
+        where: {
+          id: decodedToken.id,
+        },
       })
-      const savedEntry = await entry.save()
-      user.entries = user.entries.concat(savedEntry._id)
-      await user.save()
+
+      const savedEntry = await prisma.entry.create({
+        data: {
+          title: body.title,
+          content: body.content,
+          author: {
+            connect: {
+              id: user.id,
+            },
+          },
+        },
+      })
+
       return NextResponse.json(savedEntry, { status: 201 })
     } catch (error) {
         console.log(error)
