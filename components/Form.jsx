@@ -1,15 +1,16 @@
 "use client"
 import styles from './Form.module.css'
-//import handler from '../app/api/entries.route.js'
-import { useState, useContext } from 'react'
-//import { EditModalContext, NotificationContext } from "./ContextProvider"
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { editModal } from '../app/slices/editModalSlice'
+import { setNotificationMessage, clearNotification } from '../app/slices/notificationSlice'
 import axios from 'axios'
 
 const Form = ({journalEntries, setJournalEntries}) => {
   const [postTitle, setPostTitle] = useState('')
   const [postBody, setPostBody] = useState('')
-//   const editModalContext = useContext(EditModalContext)
-//   const { showSuccess, showError, clearNotification } = useContext(NotificationContext)
+  const dispatch = useDispatch()
+  const editModal = useSelector(state => state.editModal.editModal)
 
   const addEntry = async (event) => {
     event.preventDefault()
@@ -22,24 +23,10 @@ const Form = ({journalEntries, setJournalEntries}) => {
     try {
         const response = await axios.post('/api/entries', newEntry)
         setJournalEntries([...journalEntries, response.data])
-        setPostTitle('')
-        setPostBody('')
+        dispatch(setNotificationMessage({ message: "Entry created!", type: "success" }))
       } catch (error) {
-        console.error(error)
-        // Handle error if needed
+        dispatch(setNotificationMessage({ message: "Could not create entry", type: "error" }))
       }
-    
-    //setJournalEntries(journalEntries.concat(newEntry))
-    // try {
-    //   const res = await entriesService.createEntry(newEntry)
-    //   setJournalEntries(journalEntries.concat(res))
-    //   showSuccess("Entry created!")
-    //   setTimeout(() => clearNotification(), 3000)
-    // } catch (error) {
-    //   console.error(error)
-    //   showError("Could not create entry")
-    //   setTimeout(() => clearNotification(), 3000)
-    // }
 
     setPostTitle('')
     setPostBody('')

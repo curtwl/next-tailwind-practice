@@ -6,22 +6,26 @@ import axios from 'axios'
 import { useState, useContext, useEffect } from 'react'
 import Form from '../components/Form'
 import Posts from '../components/Posts'
-import { useRouter } from 'next/navigation'
+import Notification from '@/components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoggedInUser } from './slices/loginSlice'
+import { setLoggedInUser, setToken } from './slices/loginSlice'
+import { clearNotification } from './slices/notificationSlice'
 
 export default function Home() {
   const [journalEntries, setJournalEntries] = useState([])
   const dispatch = useDispatch()
+  const token = useSelector(state => state.login.token)
+  const notificationMessage = useSelector(state => state.notification.notificationMessage)
   //const loggedInUser = useSelector((state) => state.login.loggedInUser)
 
   useEffect(() => {
     async function tryToLogin() {
       try {
         const response = await axios.post('/api/login', { username: '' })
-        console.log(response)
         const user = response.data
         dispatch(setLoggedInUser(user.username))
+        dispatch(setToken(response.data.tokenFromCookie.value))
+        console.log(token)
       } catch (error) {
         console.log(error)
       }
@@ -41,7 +45,7 @@ export default function Home() {
     tryToLogin()
     loadEntries()
   }, [])
-
+console.log(notificationMessage?.message)
   return (
     <main className="w-11/12 my-10 mx-auto">
         <section >
@@ -56,7 +60,7 @@ export default function Home() {
             setJournalEntries={setJournalEntries}
           />
         </section>
-        {/* {notificationMessage.message && <Notification />} */}
+        {notificationMessage.message && <Notification />}
       </main>
   )
 }

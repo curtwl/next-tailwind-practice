@@ -5,7 +5,7 @@ import { useState, useContext } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoggedInUser } from '../slices/loginSlice'
+import { setLoggedInUser, setToken } from './slices/loginSlice'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -31,6 +31,7 @@ export default function Login() {
         const user = response.data
         console.log(user)
         dispatch(setLoggedInUser(user.username))
+        dispatch(setToken(response.data.tokenFromCookie.value))
         console.log(loggedInUser)
         router.push('/')
         // entriesService.setToken(user.accessToken)
