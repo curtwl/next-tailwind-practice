@@ -1,5 +1,6 @@
 "use client"
 import styles from './Posts.module.css'
+import axios from 'axios'
 // import EditForm from './EditForm'
 // import entriesService from '../services/entriesService'
 import { useState, useContext } from 'react'
@@ -20,24 +21,25 @@ const Posts = ({journalEntries, setJournalEntries}) => {
     // editModalContext.setEditModal(true)
   }
 console.log(journalEntries)
-//   const deleteEntryHandler = async (entry) => {
-//     try {
-//       if (window.confirm("Are you sure you want to delete this entry?")) {
-//         await entriesService.deleteEntry(entry.id)
-//         showSuccess("Journal entry deleted successfully")
-//         setTimeout(() => clearNotification(), 3500)
-//         setJournalEntries(journalEntries.filter((e) => e.id !== entry.id))
-//       }
-//     } catch (error) {
-//         console.error(error)
-//         if (error.response?.status === 401) {
-//           showError("You can only delete your own entries")
-//         } else {
-//           showError("Server error. Please try again!")
-//         }
-//         setTimeout(() => clearNotification(), 3500)
-//       }
-//     }
+
+  const deleteEntryHandler = async (entry) => {
+    try {
+      if (window.confirm("Are you sure you want to delete this entry?")) {
+        await axios.delete(`/api/entries/${entry.id}`)
+        // showSuccess("Journal entry deleted successfully")
+        // setTimeout(() => clearNotification(), 3500)
+        setJournalEntries(journalEntries.filter((e) => e.id !== entry.id))
+      }
+    } catch (error) {
+        console.error(error)
+        // if (error.response?.status === 401) {
+        //   showError("You can only delete your own entries")
+        // } else {
+        //   showError("Server error. Please try again!")
+        // }
+        // setTimeout(() => clearNotification(), 3500)
+      }
+    }
 
   const reversedEntries = journalEntries ? [...journalEntries].reverse() : null
   const postsHTML = reversedEntries.map((entry) => (

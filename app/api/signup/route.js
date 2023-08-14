@@ -57,5 +57,5 @@ export async function DELETE(req) {
         return NextResponse.json({ message: 'error', type: error })
       }
 
-      return NextResponse.json({ message: 'Your account has been successfully deleted', status: 204, , type: success })
+      return NextResponse.json({ message: 'Your account has been successfully deleted', status: 204, type: success })
 }
