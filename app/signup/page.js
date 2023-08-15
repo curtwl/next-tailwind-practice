@@ -3,7 +3,6 @@
 import styles from './page.module.css'
 import React from "react"
 import { useState } from 'react'
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLoggedInUser, setToken } from '../slices/loginSlice'
 import { useRouter } from 'next/navigation'
