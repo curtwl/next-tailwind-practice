@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { editModal } from '../app/slices/editModalSlice'
 import { setNotificationMessage, clearNotification } from '../app/slices/notificationSlice'
-import axios from 'axios'
 
 const Form = ({journalEntries, setJournalEntries}) => {
   const [postTitle, setPostTitle] = useState('')
@@ -21,8 +20,16 @@ const Form = ({journalEntries, setJournalEntries}) => {
     }
 
     try {
-        const response = await axios.post('/api/entries', newEntry)
-        setJournalEntries([...journalEntries, response.data])
+        const response = await fetch('/api/entries', { 
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newEntry)
+        })
+        const data = await response.json()
+        setJournalEntries([...journalEntries, data])
         dispatch(setNotificationMessage({ message: "Entry created!", type: "success" }))
       } catch (error) {
         dispatch(setNotificationMessage({ message: "Could not create entry", type: "error" }))

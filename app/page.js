@@ -2,7 +2,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './page.module.css'
-import axios from 'axios'
 import { useState, useContext, useEffect } from 'react'
 import Form from '../components/Form'
 import Posts from '../components/Posts'
@@ -21,26 +20,30 @@ export default function Home() {
   useEffect(() => {
     async function tryToLogin() {
       try {
-        const response = await axios.post('/api/login', { username: '' })
-        const user = response.data
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          body: JSON.stringify({ username: '' })  // null username to login with token instead of pw
+        })
+        const user = await response.json()
         dispatch(setLoggedInUser(user.username))
-        dispatch(setToken(response.data.tokenFromCookie.value))
-        console.log(token)
+        dispatch(setToken(user.tokenFromCookie.value))
+        console.log(user)
       } catch (error) {
         console.log(error)
       }
     }
-
+    
     async function loadEntries() {
       try {
-        const response = await axios.get('/api/entries')
-        const intialEntries = response.data
+        const response = await fetch('/api/entries')
+        const intialEntries = await response.json()
         console.log(intialEntries, 'use effect intialEntries')
         setJournalEntries(intialEntries)
       } catch (error) {
         console.log(error)
       }
     }
+    console.log(token)
     console.log('use effect')
     tryToLogin()
     loadEntries()

@@ -2,10 +2,9 @@
 import React from "react"
 import styles from './page.module.css'
 import { useState, useContext } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoggedInUser, setToken } from './slices/loginSlice'
+import { setLoggedInUser, setToken } from '../slices/loginSlice'
 
 export default function Login() {
   const [username, setUsername] = useState('')
@@ -22,16 +21,19 @@ export default function Login() {
       }
     
       try {
-        const response = await axios.post('/api/login', userObject)
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          body: JSON.stringify(userObject)
+        })
     
         if (response.status !== 200) {
           throw new Error('Username or password incorrect')
         }
     
-        const user = response.data
+        const user = await response.json()
         console.log(user)
         dispatch(setLoggedInUser(user.username))
-        dispatch(setToken(response.data.tokenFromCookie.value))
+        dispatch(setToken(user.accessToken))
         console.log(loggedInUser)
         router.push('/')
         // entriesService.setToken(user.accessToken)

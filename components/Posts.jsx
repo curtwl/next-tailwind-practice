@@ -1,6 +1,5 @@
 "use client"
 import styles from './Posts.module.css'
-import axios from 'axios'
 // import EditForm from './EditForm'
 // import entriesService from '../services/entriesService'
 import { useState, useContext } from 'react'
@@ -25,7 +24,9 @@ console.log(journalEntries)
   const deleteEntryHandler = async (entry) => {
     try {
       if (window.confirm("Are you sure you want to delete this entry?")) {
-        await axios.delete(`/api/entries/${entry.id}`)
+        await fetch(`/api/entries/${entry.id}`, {
+          method: 'DELETE'
+        })
         // showSuccess("Journal entry deleted successfully")
         // setTimeout(() => clearNotification(), 3500)
         setJournalEntries(journalEntries.filter((e) => e.id !== entry.id))

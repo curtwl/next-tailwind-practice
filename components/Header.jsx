@@ -5,7 +5,6 @@ import { setLoggedInUser } from '../app/slices/loginSlice'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import axios from 'axios'
 
 const Header = () => {
   const pathsForJSX = {
@@ -21,7 +20,9 @@ const Header = () => {
   const loggedInUser = useSelector(state => state.login.loggedInUser)
 
   const logoutUser = async () => {
-    const response = await axios.post('/api/logout')
+    const response = await fetch('/api/logout', {
+      method: 'POST'
+    })
     dispatch(setLoggedInUser(null))
     router.push('/')
   }
@@ -29,7 +30,7 @@ const Header = () => {
   console.log(loggedInUser)
   return (
     <nav className="flex flex-row w-full h-full items-start md:items-center justify-between bg-blue-200" >
-      <div className="m-4 flex items-center">
+      <div className="m-4 flex flex-col items-start md:flex-row md:items-center">
         <h1 className="">
           <Link href="." className="header-link">Digital Journal&nbsp;</Link>
         </h1>

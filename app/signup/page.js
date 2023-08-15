@@ -5,7 +5,7 @@ import React from "react"
 import { useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoggedInUser } from '../slices/loginSlice'
+import { setLoggedInUser, setToken } from '../slices/loginSlice'
 import { useRouter } from 'next/navigation'
 // import { LoginContext, NotificationContext } from "../components/ContextProvider"
 // import Notification from "../components/Notification"
@@ -28,16 +28,23 @@ export default function Signup() {
         console.log(userObject)
 
         try {
-          const signupResponse = await axios.post('/api/signup', userObject)
+          const signupResponse = await fetch('/api/signup', {
+            method: 'POST',
+            body: JSON.stringify(userObject)
+          })
           if (signupResponse.status !== 201) {
             throw new Error('Unable to sign up')
           }
-          const loginResponse = await axios.post('/api/login', userObject)
-          console.log(loginResponse.data.accessToken)
+          const loginResponse = await fetch('/api/login', {
+            method: 'POST',
+            body: JSON.stringify(userObject)
+          })
+          // console.log(loginResponse.data.accessToken)
       
-          const user = signupResponse.data
+          const user = await signupResponse.json()
           console.log(user)
           dispatch(setLoggedInUser(user.username))
+          dispatch(setToken(user.accessToken))
           console.log(loggedInUser)
           router.push('/')
         } catch (error) {
