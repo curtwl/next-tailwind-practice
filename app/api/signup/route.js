@@ -33,7 +33,7 @@ export async function POST(req) {
     }
   })
   
-  return NextResponse.json(user, { status: 201 })
+  return NextResponse.json(user.username, { status: 201 })
 }
 
 export async function DELETE(req) {

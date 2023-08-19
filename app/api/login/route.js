@@ -34,17 +34,18 @@ async function loginWithPassword(body) {
       id: user.id,
     }, 
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: '6s' }
-    )
+    { expiresIn: '10s' }
+  )
     
-    const refreshToken = jwt.sign(
-      userForToken,
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "7d" }
-      )
-      
-      const cookieStore = cookies()
-      cookieStore.set('userCookie', refreshToken, { httpOnly: true })
+  const refreshToken = jwt.sign(
+    userForToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "7d" }
+  )
+  console.log('access', accessToken)
+  console.log('refresh', refreshToken)
+  const cookieStore = cookies()
+  cookieStore.set('userCookie', refreshToken, { maxAge: 7*24*60*60*1000,  httpOnly: true })
   return NextResponse.json({ accessToken, username: user.username, id: user.id }, { status: 200 })
 }
 

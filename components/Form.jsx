@@ -47,7 +47,11 @@ const Form = ({journalEntries, setJournalEntries}) => {
         <label htmlFor="postBody">Body:</label>
         <textarea id="postBody" className={styles.postBody} value={postBody} onChange={({ target }) => setPostBody(target.value)} />
         <p>Use the form above to create a post.</p>
-        <button className={styles.submitBtn} type='submit'>Submit</button>
+        <button className="min-w-[80px] w-auto px-3 py-3 bg-blue-500 text-white text-base font-medium rounded border-none mt-5 mb-10" 
+          type='submit'
+        >
+          Submit
+        </button>
       </form>
     </div>
   )
